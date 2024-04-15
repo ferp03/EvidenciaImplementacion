@@ -13,6 +13,17 @@ def match(tokenEsperado):
 
 # Función principal: implementa el análisis sintáctico
 def parser():
+    #Borrar la información del documento txt
+    f = open("output.txt", "w")
+    f.write("")
+
+    #Escribir los headers del html
+    f = open("output.txt", "a")
+    f.write("<!DOCTYPE html>\n")
+    f.write("<html>\n")
+    f.write("<head>\n<title>Output del parser</title>\n</head>\n")
+    f.close()
+
     global token
     arr = scanner.obten_token() 
     token = arr[-1] # inicializa con el primer token

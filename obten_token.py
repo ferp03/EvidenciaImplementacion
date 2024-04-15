@@ -69,6 +69,10 @@ _leer = True # indica si se requiere leer un caracter de la entrada estándar
 
 # Función principal: implementa el análisis léxico
 def obten_token():
+    # Abrir el archivo txt
+    f = open("output.txt", "a")
+    f.write("<body>\n")
+
     """Implementa un analizador léxico: lee los caracteres de la entrada estándar"""
     global _c, _leer
     edo = 0 # número de estado en el autómata
@@ -93,47 +97,50 @@ def obten_token():
                         break
         if edo == INT:    
             _leer = False # ya se leyó el siguiente caracter
-            print("Entero", lexema)
+            f.write(f"<p>Entero {lexema}</p>\n")
             ARR_TOKENS.append(INT)
         elif edo == FLT:   
             _leer = False # ya se leyó el siguiente caracter
-            print("Flotante", lexema)
+            f.write(f"<p>Flotante {lexema}</p>\n")
             ARR_TOKENS.append(FLT)
         elif edo == OPB:   
             lexema += _c  # el último caracter forma el lexema
-            print("Operador", lexema)
+            f.write(f"<p>Operador {lexema}</p>\n")
             ARR_TOKENS.append(OPB)
         elif edo == LRP:   
             lexema += _c  # el último caracter forma el lexema
-            print("Delimitador", lexema)
+            f.write(f"<p>Delimitador {lexema}</p>\n")
             ARR_TOKENS.append(LRP)
         elif edo == RRP:  
             lexema += _c  # el último caracter forma el lexema
-            print("Delimitador", lexema)
+            f.write(f"<p>Delimitador {lexema}</p>\n")
             ARR_TOKENS.append(RRP)
         elif edo == COM:
             lexema += _c
-            print("Separador ,")
+            f.write(f"<p>Separador ,</p>\n")
             ARR_TOKENS.append(COM)
         elif edo == EQL:
             lexema += _c
-            print("Igual =")
+            f.write(f"<p>Igual =</p>\n")
             ARR_TOKENS.append(EQL)
         elif edo == ID:
-            leer = False
-            print("Identificador", lexema)
+            _leer = False
+            f.write(f"<p>Identificador {lexema}</p>\n")
             ARR_TOKENS.append(ID)
         elif edo == FUNC:
             lexema += _c
-            print("Funcion", lexema)
+            f.write(f"<p>Funcion {lexema}</p>\n")
             ARR_TOKENS.append(FUNC)  
         elif edo == ASIG:
             lexema += _c
-            print("Asignacion", lexema)
+            f.write(f"<p>Asignacion {lexema}</p>\n")
             ARR_TOKENS.append(ASIG)  
         elif edo == END:
             print("Fin de expresion")
             ARR_TOKENS.append(END)
+            f.write("</body>\n")
+            f.write("</html>")
+            f.close()
             return ARR_TOKENS
         else:   
             _leer = False # el último caracter no es raro
@@ -142,4 +149,3 @@ def obten_token():
             return ARR_TOKENS
         lexema = ""
         edo = 0
-obten_token()

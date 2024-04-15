@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Output del parser</title>
+</head>
+<body>
+<p>Identificador hola</p>
+<p>Entero 2</p>
+<p>Asignacion a=2
+</p>
+<p>Funcion func()</p>
+</body>
+</html>

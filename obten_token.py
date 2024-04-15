@@ -90,7 +90,7 @@ def obten_token():
                     if edo == 109:
                         edo = 6
                         lexema += _c
-                    break
+                        break
         if edo == INT:    
             _leer = False # ya se leyó el siguiente caracter
             print("Entero", lexema)

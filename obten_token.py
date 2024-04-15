@@ -138,13 +138,11 @@ def obten_token():
         elif edo == END:
             print("Fin de expresion")
             ARR_TOKENS.append(END)
-            f.write("</body>\n")
-            f.write("</html>")
             f.close()
             return ARR_TOKENS
         else:   
             _leer = False # el último caracter no es raro
-            print("ERROR! palabra ilegal", lexema)
+            f.write(f"<h2>ERROR! palabra ilegal {lexema}</h2>\n")
             ARR_TOKENS.append(ERR)
             return ARR_TOKENS
         lexema = ""

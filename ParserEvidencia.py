@@ -29,8 +29,16 @@ def parser():
     token = arr[-1] # inicializa con el primer token
     EXP()
     if token == scanner.END:
+        f = open("output.txt", "a")
+        f.write("</body>\n")
+        f.write("</html>\n")
+        f.close()
         print("Expresion bien construida!!")
     else:
+        f = open("output.txt", "a")
+        f.write("</body>\n")
+        f.write("</html>\n")
+        f.close()
         error("expresion mal terminada")
 
 # Reconoce estructuras SEN

@@ -97,35 +97,35 @@ def obten_token():
                         break
         if edo == INT:    
             _leer = False # ya se leyó el siguiente caracter
-            f.write(f"<p>Entero {lexema}</p>\n")
+            f.write(f"<p class='INT'>Entero {lexema}</p>\n")
             ARR_TOKENS.append(INT)
         elif edo == FLT:   
             _leer = False # ya se leyó el siguiente caracter
-            f.write(f"<p>Flotante {lexema}</p>\n")
+            f.write(f"<p class='FLT'>Flotante {lexema}</p>\n")
             ARR_TOKENS.append(FLT)
         elif edo == OPB:   
             lexema += _c  # el último caracter forma el lexema
-            f.write(f"<p>Operador {lexema}</p>\n")
+            f.write(f"<p class='OPB'>Operador {lexema}</p>\n")
             ARR_TOKENS.append(OPB)
         elif edo == LRP:   
             lexema += _c  # el último caracter forma el lexema
-            f.write(f"<p>Delimitador {lexema}</p>\n")
+            f.write(f"<p class='LRP'>Delimitador {lexema}</p>\n")
             ARR_TOKENS.append(LRP)
         elif edo == RRP:  
             lexema += _c  # el último caracter forma el lexema
-            f.write(f"<p>Delimitador {lexema}</p>\n")
+            f.write(f"<p class='RRP'>Delimitador {lexema}</p>\n")
             ARR_TOKENS.append(RRP)
         elif edo == COM:
             lexema += _c
-            f.write(f"<p>Separador ,</p>\n")
+            f.write(f"<p class='COM'>Separador ,</p>\n")
             ARR_TOKENS.append(COM)
         elif edo == EQL:
             lexema += _c
-            f.write(f"<p>Igual =</p>\n")
+            f.write(f"<p class='EQL'>Igual =</p>\n")
             ARR_TOKENS.append(EQL)
         elif edo == ID:
             _leer = False
-            f.write(f"<p>Identificador {lexema}</p>\n")
+            f.write(f"<p class='ID'>Identificador {lexema}</p>\n")
             ARR_TOKENS.append(ID)
         elif edo == FUNC:
             lexema += _c

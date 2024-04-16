@@ -1,0 +1,56 @@
+.title {
+    color: white;
+    background-color: black;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 5px;
+    margin: 0px;
+}
+
+.INT {
+    color: blue;
+}
+
+.FLT {
+    color: red;
+}
+
+.OPB {
+    color: orange;
+}
+
+.LRP {
+    color: purple;
+}
+
+.RRP {
+    color: green;
+}
+
+.END {
+    color: pink;
+}
+
+.COM {
+    color: yellow;
+}
+
+.EQL {
+    color: aqua;
+}
+
+.ID {
+    color: cornflowerblue;
+}
+
+.FUNC {
+    color: goldenrod;
+}
+
+.ASIG {
+    color: greenyellow;
+}
+
+.ERR {
+    color: darkolivegreen;
+}

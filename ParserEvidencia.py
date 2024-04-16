@@ -32,6 +32,7 @@ def parser():
     f.write("<!DOCTYPE html>\n")
     f.write("<html>\n")
     f.write("<head>\n<title>Output del parser</title>\n</head>\n")
+    f.write("<link rel='stylesheet' type='text/css' href='resalta_sintaxis.css'>")
     f.close()
 
     global token

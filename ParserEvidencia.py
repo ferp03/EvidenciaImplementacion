@@ -2,6 +2,16 @@
 
 import sys
 import obten_token as scanner
+import http.server
+import socketserver
+
+def run_server():
+    PORT = 8000
+    Handler = http.server.SimpleHTTPRequestHandler
+    with socketserver.TCPServer(("", PORT), Handler) as httpd:
+        print("serving at port", PORT)
+        print("http://localhost:8000/output.html")
+        httpd.serve_forever()
 
 # Empata y obtiene el siguiente token
 def match(tokenEsperado):
@@ -14,11 +24,11 @@ def match(tokenEsperado):
 # Función principal: implementa el análisis sintáctico
 def parser():
     #Borrar la información del documento txt
-    f = open("output.txt", "w")
+    f = open("output.html", "w")
     f.write("")
 
     #Escribir los headers del html
-    f = open("output.txt", "a")
+    f = open("output.html", "a")
     f.write("<!DOCTYPE html>\n")
     f.write("<html>\n")
     f.write("<head>\n<title>Output del parser</title>\n</head>\n")
@@ -29,17 +39,20 @@ def parser():
     token = arr[-1] # inicializa con el primer token
     EXP()
     if token == scanner.END:
-        f = open("output.txt", "a")
+        f = open("output.html", "a")
         f.write("</body>\n")
         f.write("</html>\n")
         f.close()
         print("Expresion bien construida!!")
+        run_server()
+
     else:
-        f = open("output.txt", "a")
+        f = open("output.html", "a")
         f.write("</body>\n")
         f.write("</html>\n")
         f.close()
         error("expresion mal terminada")
+        run_server()
 
 # Reconoce estructuras SEN
 def SEN():

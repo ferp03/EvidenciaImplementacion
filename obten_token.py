@@ -70,7 +70,7 @@ _leer = True # indica si se requiere leer un caracter de la entrada estándar
 # Función principal: implementa el análisis léxico
 def obten_token():
     # Abrir el archivo txt
-    f = open("output.txt", "a")
+    f = open("output.html", "a")
     f.write("<body>\n")
 
     """Implementa un analizador léxico: lee los caracteres de la entrada estándar"""

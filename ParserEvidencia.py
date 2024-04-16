@@ -1,4 +1,7 @@
-# Autor: Fernando Pérez
+#Fernando Pérez García       A01285236
+#Luis Blackaller de la Peña  A01178173
+#Hervey Navarro Olazarán     A01178086
+#Eugenio Garza Cabello       A00836687
 
 import sys
 import obten_token as scanner
@@ -32,7 +35,10 @@ def parser():
     f.write("<!DOCTYPE html>\n")
     f.write("<html>\n")
     f.write("<head>\n<title>Output del parser</title>\n</head>\n")
-    f.write("<link rel='stylesheet' type='text/css' href='resalta_sintaxis.css'>")
+    f.write("<link rel='stylesheet' type='text/css' href='resalta_sintaxis.css'>\n")
+    f.write("<body>\n")
+    f.write("<div style='display: flex; flex-wrap: wrap;'>\n")
+    f.write("<p> \n")
     f.close()
 
     global token
@@ -41,14 +47,20 @@ def parser():
     EXP()
     if token == scanner.END:
         f = open("output.html", "a")
+        f.write("<span class='END'>$</span>\n")
+        f.write("</p>\n")
+        f.write("</div>\n")
         f.write("</body>\n")
         f.write("</html>\n")
         f.close()
         print("Expresion bien construida!!")
         run_server()
 
+#checar si si dejarlo o no, si quiero que se siga corriedndo el servidor aun con el error dejar. 
     else:
         f = open("output.html", "a")
+        f.write("<span class='END'>$</span>\n")
+        f.write("</p>\n")
         f.write("</body>\n")
         f.write("</html>\n")
         f.close()

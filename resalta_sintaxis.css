@@ -15,16 +15,9 @@
     color: red;
 }
 
-.OPB {
-    color: orange;
-}
-
-.LRP {
-    color: purple;
-}
-
-.RRP {
+.DELIM{
     color: green;
+
 }
 
 .END {
@@ -32,25 +25,21 @@
 }
 
 .COM {
-    color: yellow;
+    color: rgb(78, 90, 2);
 }
 
 .EQL {
-    color: aqua;
+    color: orange;
 }
 
 .ID {
     color: cornflowerblue;
 }
 
-.FUNC {
-    color: goldenrod;
+.STR{
+    color: #5c3782
 }
 
-.ASIG {
-    color: greenyellow;
-}
-
-.ERR {
-    color: darkolivegreen;
+.BOOL{
+    color: #820f0f
 }

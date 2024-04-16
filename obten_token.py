@@ -1,5 +1,7 @@
-#Fernando Pérez A01285236
-#Luis Blackaller
+#Fernando Pérez García       A01285236
+#Luis Blackaller de la Peña  A01178173
+#Hervey Navarro Olazarán     A01178086
+#Eugenio Garza Cabello       A00836687
 
 import sys
 
@@ -13,8 +15,8 @@ END = 105  # Fin de la entrada
 COM = 106  #comas
 EQL = 107  #igual
 ID = 108  #letra
-FUNC = 109 #funcion
-ASIG = 110 #asignacion
+STR = 109 #funcion
+BOOL = 110 #booleano
 ERR = 200  # Error léxico: palabra desconocida
 
 
@@ -22,17 +24,15 @@ ERR = 200  # Error léxico: palabra desconocida
 # [renglón, columna] = [estado no final, transición]
 # Estados > 99 son finales (ACEPTORES)
 # Caso especial: Estado 200 = ERROR
-#      dig  op  (   ) raro esp  .   $   ,    =   ID
-MT = [[  1,OPB,LRP,RRP,  4,  0,  4, END, COM, EQL, 5], # edo 0 - estado inicial
-      [  1,INT,INT,INT,  4,INT,  2, INT, INT, INT, INT], # edo 1 - dígitos enteros
-      [  3,  4,  4,  4,  4,ERR,  4,   4,   4,   4, 4], # edo 2 - primer decimal flotante
-      [  3,FLT,FLT,FLT,  4,FLT,  4, FLT, FLT, FLT, 3], # edo 3 - decimales restantes flotante
-      [  4,  4,  4,  4,  4,ERR,  4,   4,   4,   4, 4], # edo 4 - estado de error
-      [  5, ID, 6, ID,   4,ID,   4,  ID,  ID,  7, 5], # edo 5 - estado de identificador
-      [  6, 6,  8, FUNC, 4, 6,   4,  6,   6,   6,  6], #edo 6 - estado de funciones
-      [  9, 9,  9, 9,    4, 9,   4,  9,   9,   9,  9], # edo 7 - estado de asignacion
-      [  8, 8,  8, FUNC, 4, 8,   4,  8,   8,   8,  8], #edo 8 -  estado de funcion dentro de funcion
-      [  9, 9,  9, 9,    4, ASIG,4,  ASIG,9,   9,  9]] #edo 9 - estado de expresiones aritmeticas
+#      dig  op  (   ) raro esp  .   $      ,   =   ID  STR   BOOL
+MT = [[  1,OPB,LRP,RRP,  4,  0,  4, END, COM, EQL, 5,     6,  7], # edo 0 - estado inicial
+      [  1,INT,INT,INT,  4,INT,  2, INT, INT, INT, INT, INT, INT], # edo 1 - dígitos enteros
+      [  3,  4,  4,  4,  4,ERR,  4,   4,   4,   4, 4,     4,   4], # edo 2 - primer decimal flotante
+      [  3,FLT,FLT,FLT,  4,FLT,  4, FLT, FLT, FLT, FLT, FLT,  FLT], # edo 3 - decimales restantes flotante
+      [  4,  4,  4,  4,  4,ERR,  4,   4,   4,   4, 4,     4,    4], # edo 4 - estado de error
+      [  5, ID, ID, ID,  4,ID,   4,  ID,   ID,  ID, 5,   ID,   ID], # edo 5 - estado de identificador
+      [  6, 6,  6, 6,    6, 6,   6,   6,    6,  6, 6,   STR,    6], #edo 6 - estado de string
+      [  4, 4,  4, 4,    4, 4,   4,   4,    4,  4, 4,   4,   BOOL]] #edo 7 - estado de booleano
 
 # Filtro de caracteres: regresa el número de columna de la matriz de transiciones
 # de acuerdo al caracter dado
@@ -61,6 +61,10 @@ def filtro(c):
         return 9
     elif c.isalpha() or c == '_': #identificadores
         return 10
+    elif c == '"': #strings
+        return 11
+    elif c == '#': #booleanos
+        return 12
     else: # caracter raro
         return 4
 
@@ -71,7 +75,6 @@ _leer = True # indica si se requiere leer un caracter de la entrada estándar
 def obten_token():
     # Abrir el archivo txt
     f = open("output.html", "a")
-    f.write("<body>\n")
 
     """Implementa un analizador léxico: lee los caracteres de la entrada estándar"""
     global _c, _leer
@@ -84,57 +87,54 @@ def obten_token():
             else: _leer = True
             edo = MT[edo][filtro(_c)]
             if edo < 100 and edo != 0: lexema += _c
-            #Si hay una funcion dentro de otra funcion
-            if edo == 8:
-                while edo < 100:    # mientras el estado no sea ACEPTOR ni ERROR
-                    if _leer: _c = sys.stdin.read(1)
-                    else: _leer = True
-                    edo = MT[edo][filtro(_c)]
-                    if edo < 100 and edo != 0: lexema += _c
-                    if edo == 109:
-                        edo = 6
-                        lexema += _c
-                        break
+            #Verificar si el booleano es correcto despues del #
+            if edo == 7: #leyó un # entonces esta en el estado de booleano
+                _c = sys.stdin.read(1) #leer el siguiente caracter
+                if _c == 't' or _c == 'f':
+                    edo = BOOL
+                else:
+                    edo = 4
+
         if edo == INT:    
             _leer = False # ya se leyó el siguiente caracter
-            f.write(f"<p class='INT'>Entero {lexema}</p>\n")
+            f.write(f"<span class='INT'>{lexema}</span>\n")
             ARR_TOKENS.append(INT)
         elif edo == FLT:   
             _leer = False # ya se leyó el siguiente caracter
-            f.write(f"<p class='FLT'>Flotante {lexema}</p>\n")
+            f.write(f"<span class='FLT'>{lexema}</span>\n")
             ARR_TOKENS.append(FLT)
         elif edo == OPB:   
             lexema += _c  # el último caracter forma el lexema
-            f.write(f"<p class='OPB'>Operador {lexema}</p>\n")
+            f.write(f"<span class='OPB'>{lexema}</span>\n")
             ARR_TOKENS.append(OPB)
         elif edo == LRP:   
             lexema += _c  # el último caracter forma el lexema
-            f.write(f"<p class='LRP'>Delimitador {lexema}</p>\n")
+            f.write(f"<span class='DELIM'>{lexema}</span>\n")
             ARR_TOKENS.append(LRP)
         elif edo == RRP:  
             lexema += _c  # el último caracter forma el lexema
-            f.write(f"<p class='RRP'>Delimitador {lexema}</p>\n")
+            f.write(f"<span class='DELIM'>{lexema}</span>\n")
             ARR_TOKENS.append(RRP)
         elif edo == COM:
             lexema += _c
-            f.write(f"<p class='COM'>Separador ,</p>\n")
+            f.write(f"<span class='COM'>,</span>\n")
             ARR_TOKENS.append(COM)
         elif edo == EQL:
             lexema += _c
-            f.write(f"<p class='EQL'>Igual =</p>\n")
+            f.write(f"<span class='EQL'>=</span>\n")
             ARR_TOKENS.append(EQL)
         elif edo == ID:
             _leer = False
-            f.write(f"<p class='ID'>Identificador {lexema}</p>\n")
+            f.write(f"<span class='ID'>{lexema}</span>\n")
             ARR_TOKENS.append(ID)
-        elif edo == FUNC:
+        elif edo == STR:
             lexema += _c
-            f.write(f"<p>Funcion {lexema}</p>\n")
-            ARR_TOKENS.append(FUNC)  
-        elif edo == ASIG:
+            f.write(f"<span class='STR'>{lexema}</span>\n")
+            ARR_TOKENS.append(STR)
+        elif edo == BOOL:
             lexema += _c
-            f.write(f"<p>Asignacion {lexema}</p>\n")
-            ARR_TOKENS.append(ASIG)  
+            f.write(f"<span class='BOOL'>{lexema}</span>\n")
+            ARR_TOKENS.append(BOOL)
         elif edo == END:
             print("Fin de expresion")
             ARR_TOKENS.append(END)
@@ -142,8 +142,9 @@ def obten_token():
             return ARR_TOKENS
         else:   
             _leer = False # el último caracter no es raro
-            f.write(f"<h2>ERROR! palabra ilegal {lexema}</h2>\n")
+            print(f"ERROR! palabra ilegal {lexema}\n")
             ARR_TOKENS.append(ERR)
             return ARR_TOKENS
         lexema = ""
         edo = 0
+

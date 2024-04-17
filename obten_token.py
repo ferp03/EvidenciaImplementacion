@@ -14,7 +14,7 @@ RRP = 104  # Delimitador: paréntesis derecho
 END = 105  # Fin de la entrada
 COM = 106  #comas
 EQL = 107  #igual
-ID = 108  #letra
+ID = 108  #id
 STR = 109 #funcion
 BOOL = 110 #booleano
 ERR = 200  # Error léxico: palabra desconocida
@@ -136,13 +136,12 @@ def obten_token():
             f.write(f"<span class='BOOL'>{lexema}</span>\n")
             ARR_TOKENS.append(BOOL)
         elif edo == END:
-            print("Fin de expresion")
             ARR_TOKENS.append(END)
             f.close()
             return ARR_TOKENS
         else:   
             _leer = False # el último caracter no es raro
-            print(f"ERROR! palabra ilegal {lexema}\n")
+            print(f"ERROR LEXICO")
             ARR_TOKENS.append(ERR)
             return ARR_TOKENS
         lexema = ""

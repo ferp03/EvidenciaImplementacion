@@ -87,6 +87,9 @@ def obten_token():
             else: _leer = True
             edo = MT[edo][filtro(_c)]
             if edo < 100 and edo != 0: lexema += _c
+            #Agregar los saltos de linea en html
+            if _c == '\n':
+                f.write("<br>\n")
             #Verificar si el booleano es correcto despues del #
             if edo == 7: #leyó un # entonces esta en el estado de booleano
                 _c = sys.stdin.read(1) #leer el siguiente caracter
@@ -146,3 +149,4 @@ def obten_token():
             return ARR_TOKENS
         lexema = ""
         edo = 0
+

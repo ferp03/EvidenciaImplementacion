@@ -19,10 +19,13 @@ def run_server():
 # Empata y obtiene el siguiente token
 def match(tokenEsperado):
     global token
+    global arr
+    global count
     if token == tokenEsperado:
-        token = scanner.obten_token()
+        count += 1
+        token = arr[count]
     else:
-        error("token equivocado")
+        error(f"token equivocado. Se esperaba {tokenEsperado}, pero se encontró {token}")
 
 # Función principal: implementa el análisis sintáctico
 def parser():
@@ -42,8 +45,11 @@ def parser():
     f.close()
 
     global token
+    global arr 
+    global count
+    count = 0
     arr = scanner.obten_token() 
-    token = arr[-1] # inicializa con el primer token
+    token = arr[count] # inicializa con el primer token
     EXP()
     if token == scanner.END:
         f = open("output.html", "a")
@@ -64,7 +70,7 @@ def parser():
         f.write("</body>\n")
         f.write("</html>\n")
         f.close()
-        error("expresion mal terminada")
+        error("ERROR SINTACTICO")
         run_server()
 
 # Reconoce estructuras SEN

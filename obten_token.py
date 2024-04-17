@@ -61,7 +61,7 @@ def filtro(c):
         return 9
     elif c.isalpha() or c == '_': #identificadores
         return 10
-    elif c == '"': #strings
+    elif ord(c) == 34 or ord(c) == 8220 or ord(c) == 8221: #strings
         return 11
     elif c == '#': #booleanos
         return 12
@@ -146,4 +146,3 @@ def obten_token():
             return ARR_TOKENS
         lexema = ""
         edo = 0
-

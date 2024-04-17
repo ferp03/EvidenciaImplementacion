@@ -50,7 +50,7 @@ def parser():
     count = 0
     arr = scanner.obten_token() 
     token = arr[count] # inicializa con el primer token
-    EXP()
+    PROG()
     if token == scanner.END:
         f = open("output.html", "a")
         f.write("<span class='END'>$</span>\n")
@@ -73,60 +73,48 @@ def parser():
         error("ERROR SINTACTICO")
         run_server()
 
-# Reconoce estructuras SEN
-def SEN():
+#Funcion que inicializa el programa
+#Se reconoce como valido cuando el programa esta conformado por cero o mas expresiones
+def PROG():
+    while token != scanner.END:
+        EXP()
+
+#Funcion que identifica expresiones, las cuales se conforman por atomos o listas
+def EXP():
+    #Identifica como atomo
+    if token == scanner.ID or token == scanner.INT or token == scanner.BOOL or token == scanner.STR:
+        ATOMO()
+    #Identifica como lista lo que esté entre parentesis
+    elif token == scanner.LRP:
+        LISTA()
+
+#Funcion que identifica atomos, los cuales pueden ser simbolos o constantes
+def ATOMO():
+    #Identifica como simbolo
     if token == scanner.ID:
         match(scanner.ID)
-        SEN1()
+    else:
+        CONSTANTE()
 
-def SEN1():
-    if token == scanner.LRP:
-        match(scanner.LRP)
-        ARGS()
-        match(scanner.RRP)
-    elif token == scanner.ID:
-        match(scanner.ID)
-        EXP()
+#Funcion que identifica constantes, las cuales pueden ser enteros, booleanos o strings
+def CONSTANTE():
+    if token == scanner.INT:
+        match(scanner.INT)
+    elif token == scanner.BOOL:
+        match(scanner.BOOL)
+    elif token == scanner.STR:
+        match(scanner.STR)
 
-#Reconoce expresiones
-def EXP():
-    if token in [scanner.INT, scanner.FLT]:
-        match(token)
-        EXP1()
-    elif token == scanner.ID:
-        match(scanner.ID)
-        ID1()
-        EXP1()
-    elif token == scanner.LRP:
-        match(scanner.LRP)
-        EXP()
-        match(scanner.RRP)
-        EXP1()
+#Funcion que identifica listas, las cuales se conforman por elementos que se encuentran entre parentesis
+def LISTA():
+    match(scanner.LRP)
+    ELEMENTOS()
+    match(scanner.RRP)
 
-def EXP1():
-    if token in [scanner.OPB, scanner.EQL]:
-        match(token)
-        EXP()
-        EXP1()
-
-#Maneja argumentos
-def ARGS():
-    if token != scanner.RRP:
-        EXP()
-        ARGS1()
-
-def ARGS1():
-    if token == scanner.COM:
-        match(scanner.COM)
-        EXP()
-        ARGS1()
-
-def ID1():
-    if token == scanner.LRP:
-        match(scanner.LRP)
-        ARGS()
-        match(scanner.RRP)
-
+#Funcion que identifica elementos, los cuales se conforman por cero o mas expresiones
+def ELEMENTOS():
+    while token in [scanner.ID, scanner.INT, scanner.BOOL, scanner.STR, scanner.LRP]: #Cicla hasta que no sea un parentesis cerrado
+        EXP() #Identifica las expresiones
 
 # Termina con un mensaje de error
 def error(mensaje):

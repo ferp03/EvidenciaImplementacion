@@ -1,12 +1,3 @@
-.title {
-    color: white;
-    background-color: black;
-    font-size: 20px;
-    font-weight: bold;
-    padding: 5px;
-    margin: 0px;
-}
-
 .INT {
     color: blue;
 }
@@ -42,4 +33,8 @@
 
 .BOOL{
     color: #820f0f
+}
+
+.ERRORES{
+    color: black;
 }

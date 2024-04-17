@@ -25,7 +25,7 @@ def match(tokenEsperado):
         count += 1
         token = arr[count]
     else:
-        error(f"token equivocado. Se esperaba {tokenEsperado}, pero se encontró {token}")
+        error(f">> Token equivocado. Se esperaba {tokenEsperado}, pero se encontró {token} <<")
 
 # Función principal: implementa el análisis sintáctico
 def parser():
@@ -53,30 +53,23 @@ def parser():
     PROG()
     if token == scanner.END:
         f = open("output.html", "a")
-        f.write("<span class='END'>$</span>\n")
         f.write("</p>\n")
         f.write("</div>\n")
         f.write("</body>\n")
         f.write("</html>\n")
         f.close()
-        print("Expresion bien construida!!")
         run_server()
-
-#checar si si dejarlo o no, si quiero que se siga corriedndo el servidor aun con el error dejar. 
+    if token == scanner.ERR:
+        error(">> ERROR LEXICO <<")
     else:
-        f = open("output.html", "a")
-        f.write("<span class='END'>$</span>\n")
-        f.write("</p>\n")
-        f.write("</body>\n")
-        f.write("</html>\n")
-        f.close()
-        error("ERROR SINTACTICO")
-        run_server()
+        error(">> ERROR SINTACTICO <<")
 
 #Funcion que inicializa el programa
 #Se reconoce como valido cuando el programa esta conformado por cero o mas expresiones
 def PROG():
     while token != scanner.END:
+        if token == scanner.ERR:
+            break
         EXP()
 
 #Funcion que identifica expresiones, las cuales se conforman por atomos o listas
@@ -118,7 +111,12 @@ def ELEMENTOS():
 
 # Termina con un mensaje de error
 def error(mensaje):
-    print("ERROR:", mensaje)
-    sys.exit(1)
-
+    f = open("output.html", "a")
+    f.write("</p>\n")
+    f.write("</div>\n")
+    f.write(f"<h2 class='ERRORES'>{mensaje}</h2>\n")
+    f.write("</body>\n")
+    f.write("</html>\n")
+    f.close()
+    run_server()
 parser()

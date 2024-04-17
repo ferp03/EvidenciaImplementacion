@@ -90,6 +90,7 @@ def obten_token():
             #Agregar los saltos de linea en html
             if _c == '\n':
                 f.write("<br>\n")
+
             #Verificar si el booleano es correcto despues del #
             if edo == 7: #leyó un # entonces esta en el estado de booleano
                 _c = sys.stdin.read(1) #leer el siguiente caracter
@@ -139,12 +140,12 @@ def obten_token():
             f.write(f"<span class='BOOL'>{lexema}</span>\n")
             ARR_TOKENS.append(BOOL)
         elif edo == END:
+            f.write(f"<span class='END'>$</span>\n")
             ARR_TOKENS.append(END)
             f.close()
             return ARR_TOKENS
         else:   
             _leer = False # el último caracter no es raro
-            print(f"ERROR LEXICO")
             ARR_TOKENS.append(ERR)
             return ARR_TOKENS
         lexema = ""
